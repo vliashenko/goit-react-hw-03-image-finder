@@ -8,7 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const SearchForm = ({ onSubmit }) => {
 
-    const handleSubmit = ( values, { resetForm }) => {
+    const handleSubmit = ( values, _ ) => {
         if(values.query.trim() === ""){
             toast.warn("You should write at least something! :)", {
                 position: toast.POSITION.TOP_RIGHT
@@ -16,7 +16,6 @@ const SearchForm = ({ onSubmit }) => {
             return;
         }
         onSubmit(values)
-        resetForm();
     }
 
     return (

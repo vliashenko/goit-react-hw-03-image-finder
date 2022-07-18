@@ -9,8 +9,12 @@ class ImageGalleryItem extends Component {
         modalIsOpen: false
     }
 
-    componentDidMount() {
-        this.handleKeyDown();
+    componentDidMount(e) {
+        window.addEventListener("keydown", e => {
+            if(e.code === "Escape") {
+                this.onModalClose();
+            }
+        })
     }
 
     componentWillUnmount() {
@@ -31,12 +35,6 @@ class ImageGalleryItem extends Component {
                 this.onModalClose();
             }
         })
-    }
-
-    handleBackdropClick = (e) => {
-        if( e.currentTarget === e.target) {
-            this.onModalClose();
-        }
     }
 
     render() {

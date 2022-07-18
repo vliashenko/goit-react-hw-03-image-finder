@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Searchbar from "./components/Searchbar/Searchbar";
 import ImageGallery from './components/ImageGallery/ImageGallery';
 import Loader from "./components/Loader/Loader";
-import Button from "./components/Button/Button";
+import Button from './components/Button/Button';
 import * as API from "./services/pixabyAPI";
 import { ToastContainer } from 'react-toastify';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
@@ -22,20 +22,32 @@ class App extends Component {
     const prevQuery = prevState.query;
     const prevPage = prevState.page;
     const { query, page } = this.state;
-    
-    if(prevQuery !== query || prevPage !== page) {
+    const defaultPage = 1;
+
+    if( prevQuery !== query ) {
+      this.setState({ isLoading: true });
       try {
-        this.setState({ isLoading: true })
-          API.pixabyAPI( query, page )
-          .then(items => {
-            this.setState(state => ({
-              items: [...state.items, ...items.hits],
+        API.pixabyAPI( query, defaultPage )
+          .then(res => {
+            this.setState({
+              items: [...res.hits],
+              isLoading: false
+            })
+          })
+      } catch (error){
+        console.log(error);
+      }
+    } else if( prevQuery !== query || prevPage !== page ){
+      try {
+        API.pixabyAPI( query, page )
+          .then(res => {
+            this.setState(state =>({
+              items: [...state.items, ...res.hits],
               isLoading: false
             }))
           })
-        } catch (error) {
-          console.log(error);
-            
+      } catch (error){
+        console.log(error);
       }
     }
   };

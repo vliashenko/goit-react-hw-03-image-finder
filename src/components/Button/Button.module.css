@@ -1,5 +1,5 @@
 .Button {
-    width: 10%;
+    width: 10% !important;
     margin: 0 auto;
     padding: 8px 16px;
     border-radius: 2px;
