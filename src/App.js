@@ -15,13 +15,14 @@ class App extends Component {
     page: 1,
     items: [],
     isLoading: false,
-    error: null
+    error: null,
+    total: null
   }
   
   componentDidUpdate(_, prevState) {
     const prevQuery = prevState.query;
     const prevPage = prevState.page;
-    const { query, page } = this.state;
+    const { query, page, items } = this.state;
     const defaultPage = 1;
 
     if( prevQuery !== query ) {
@@ -38,17 +39,23 @@ class App extends Component {
         console.log(error);
       }
     } else if( prevQuery !== query || prevPage !== page ){
+     
       try {
         API.pixabyAPI( query, page )
           .then(res => {
             this.setState(state =>({
               items: [...state.items, ...res.hits],
+              total: res.total,
               isLoading: false
             }))
           })
       } catch (error){
         console.log(error);
       }
+    }
+
+    if( items.length === this.state.total) {
+      this.setState({ total: "done" })
     }
   };
 
@@ -63,9 +70,9 @@ class App extends Component {
   };
 
   render() {
-    const { items, isLoading, error } = this.state;
+    const { items, isLoading, error, total } = this.state;
     const loading = isLoading && <Loader/>;
-    const button = items.length > 0 && <Button isLoading={isLoading} onClick={this.onLoadMoreHandler}/>;
+    const button = items.length > 0 && total !== "done" && <Button isLoading={isLoading} onClick={this.onLoadMoreHandler}/>;
     const view = !error && <ImageGallery items={items}/>;
     return (
       <div className={styles.App}>
