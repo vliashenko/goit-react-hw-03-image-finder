@@ -10,11 +10,7 @@ class ImageGalleryItem extends Component {
     }
 
     componentDidMount(e) {
-        window.addEventListener("keydown", e => {
-            if(e.code === "Escape") {
-                this.onModalClose();
-            }
-        })
+        window.addEventListener("keydown", this.handleKeyDown)
     }
 
     componentWillUnmount() {
@@ -37,6 +33,7 @@ class ImageGalleryItem extends Component {
         })
     }
 
+
     render() {
         const { webformatURL, largeImageURL } = this.props;
         const { modalIsOpen } = this.state;
@@ -51,7 +48,7 @@ class ImageGalleryItem extends Component {
                         alt="pixelby" 
                     />
                 </li>
-                {modalIsOpen && <Modal onClose={this.handleBackdropClick} url={largeImageURL}/>}
+                {modalIsOpen && <Modal onClose={this.onModalClose} url={largeImageURL}/>}
             </>
         );
     }

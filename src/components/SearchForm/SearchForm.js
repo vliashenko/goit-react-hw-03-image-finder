@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 import styles from "./SearchForm.module.css";
 import 'react-toastify/dist/ReactToastify.css';
 
-const SearchForm = ({ onSubmit }) => {
+const SearchForm = ({ onSubmit, onReset }) => {
 
     const handleSubmit = ( values, _ ) => {
         if(values.query.trim() === ""){
@@ -15,6 +15,7 @@ const SearchForm = ({ onSubmit }) => {
             })
             return;
         }
+        onReset(values.query)
         onSubmit(values)
     }
 
@@ -44,7 +45,8 @@ const SearchForm = ({ onSubmit }) => {
 };
 
 SearchForm.protoTypes = {
-    onSubmit: PropTypes.func.isRequired
+    onSubmit: PropTypes.func.isRequired,
+    onReset: PropTypes.func.isRequired
 }
 
 export default SearchForm;
